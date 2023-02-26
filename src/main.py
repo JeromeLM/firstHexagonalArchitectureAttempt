@@ -1,7 +1,7 @@
 import argparse
 from datetime import datetime
 
-from src.in_memory_message_repository import InMemoryMessageRepository
+from src.file_system_message_repository import FileSystemMessageRepository
 from src.post_message_use_case import (
     PostMessageCommand,
     PostMessageUseCase,
@@ -28,7 +28,7 @@ post_message_command = PostMessageCommand(
     id="the id", text=args.message, author=args.user
 )
 print(post_message_command)
-message_repository = InMemoryMessageRepository()
+message_repository = FileSystemMessageRepository()
 date_time_provider = RealDateTimeProvider()
 
 try:
