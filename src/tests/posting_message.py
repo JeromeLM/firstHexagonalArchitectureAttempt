@@ -1,23 +1,15 @@
 from datetime import datetime
 from unittest import TestCase
 
+from src.in_memory_message_repository import InMemoryMessageRepository
 from src.post_message_use_case import (
     PostMessageUseCase,
     Message,
     PostMessageCommand,
-    IMessageRepository,
     IDateTimeProvider,
     MessageTextTooLongError,
     MessageTextEmptyError,
 )
-
-
-class InMemoryMessageRepository(IMessageRepository):
-    def save(self, msg: Message):
-        self.message = msg
-
-    def get(self) -> Message:
-        return self.message
 
 
 class StubDateTimeProvider(IDateTimeProvider):

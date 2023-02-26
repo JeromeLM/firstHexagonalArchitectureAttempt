@@ -9,6 +9,12 @@ class Message:
     author: str
     published_at: str = None
 
+    def __str__(self):
+        return (
+            f"Message from {self.author} with id {self.id} and "
+            f"containing '{self.text}' was published at {self.published_at}"
+        )
+
 
 @dataclass
 class PostMessageCommand:
