@@ -2,9 +2,9 @@ from datetime import datetime
 from unittest import TestCase
 
 from src.in_memory_message_repository import InMemoryMessageRepository
+from src.message import Message
 from src.post_message_use_case import (
     PostMessageUseCase,
-    Message,
     PostMessageCommand,
     IDateTimeProvider,
     MessageTextTooLongError,
@@ -112,7 +112,7 @@ class TestPostingMessage(TestCase):
 
     @classmethod
     def then_posted_message_should_be(cls, expected_message: Message):
-        assert cls.message_repository.get() == expected_message
+        assert cls.message_repository.get_by_id(expected_message.id) == expected_message
 
     @classmethod
     def then_posting_should_be_refused_with_error(

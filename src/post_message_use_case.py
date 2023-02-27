@@ -1,22 +1,8 @@
 import abc
-from dataclasses import dataclass, asdict
+from dataclasses import dataclass
 
-
-@dataclass
-class Message:
-    id: str
-    text: str
-    author: str
-    published_at: str = None
-
-    def __str__(self) -> str:
-        return (
-            f"Message from {self.author} with id {self.id} and "
-            f"containing '{self.text}' was published at {self.published_at}"
-        )
-
-    def to_dict(self) -> dict:
-        return asdict(self)
+from src.message import Message
+from src.message_repository import IMessageRepository
 
 
 @dataclass
@@ -24,16 +10,6 @@ class PostMessageCommand:
     id: str
     text: str
     author: str
-
-
-class IMessageRepository(abc.ABC):
-    @abc.abstractmethod
-    def save(self, msg: Message):
-        pass
-
-    @abc.abstractmethod
-    def get(self) -> Message:
-        pass
 
 
 class IDateTimeProvider(abc.ABC):

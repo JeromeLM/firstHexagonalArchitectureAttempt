@@ -1,6 +1,7 @@
 import json
 
-from src.post_message_use_case import IMessageRepository, Message
+from src.message import Message
+from src.message_repository import IMessageRepository
 
 
 class FileSystemMessageRepository(IMessageRepository):
