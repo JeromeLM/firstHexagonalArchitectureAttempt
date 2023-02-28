@@ -1,6 +1,6 @@
-import abc
 from dataclasses import dataclass
 
+from src.datetime_provider import IDateTimeProvider
 from src.message import Message
 from src.message_repository import IMessageRepository
 
@@ -10,12 +10,6 @@ class PostMessageCommand:
     id: str
     text: str
     author: str
-
-
-class IDateTimeProvider(abc.ABC):
-    @abc.abstractmethod
-    def get_now(self):
-        pass
 
 
 class MessageTextTooLongError(Exception):

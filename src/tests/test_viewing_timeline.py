@@ -4,20 +4,21 @@ from unittest import TestCase
 
 from src.in_memory_message_repository import InMemoryMessageRepository
 from src.message import Message
+from src.stub_date_provider import StubDateTimeProvider
 from src.view_timeline_use_case import ViewTimelineUseCase
 
 
 class TestViewingTimeline(TestCase):
-    now = None
     displayed_timeline = None
     message_repository = InMemoryMessageRepository()
+    date_time_provider = StubDateTimeProvider()
 
     """
     Rule: messages are displayed in reverse chronological order
     """
 
     def test_user_Bob_can_view_the_2_messages_he_published_in_his_timeline(self):
-        self.given_3_messages_exist(
+        self.given_following_messages_exist(
             [
                 Message(
                     author="Bob",
@@ -37,6 +38,12 @@ class TestViewingTimeline(TestCase):
                     text="Bob's second message",
                     published_at="2022-06-04T19:02:00",
                 ),
+                Message(
+                    author="Bob",
+                    id="message-id-4",
+                    text="Bob's last message",
+                    published_at="2022-06-04T19:02:20",
+                ),
             ]
         )
         self.given_now_is(
@@ -45,6 +52,11 @@ class TestViewingTimeline(TestCase):
         self.when_user_wants_to_view_his_timeline(author="Bob")
         self.then_displayed_timeline_should_be(
             [
+                {
+                    "author": "Bob",
+                    "text": "Bob's last message",
+                    "publishing_time": "less than 1 minute ago",
+                },
                 {
                     "author": "Bob",
                     "text": "Bob's second message",
@@ -58,14 +70,20 @@ class TestViewingTimeline(TestCase):
             ]
         )
 
-    def given_3_messages_exist(self, messages: List[Message]):
+    """
+    Helpers
+    """
+
+    def given_following_messages_exist(self, messages: List[Message]):
         self.message_repository.given_existing_messages(messages)
 
     def given_now_is(self, now: datetime):
-        self.now = now
+        self.date_time_provider.now = now
 
     def when_user_wants_to_view_his_timeline(self, author: str):
-        view_timeline_use_case = ViewTimelineUseCase(self.message_repository)
+        view_timeline_use_case = ViewTimelineUseCase(
+            self.message_repository, self.date_time_provider
+        )
         self.displayed_timeline = view_timeline_use_case.handle(author)
 
     def then_displayed_timeline_should_be(self, expected_timeline: List[dict]):

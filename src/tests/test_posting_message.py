@@ -6,17 +6,10 @@ from src.message import Message
 from src.post_message_use_case import (
     PostMessageUseCase,
     PostMessageCommand,
-    IDateTimeProvider,
     MessageTextTooLongError,
     MessageTextEmptyError,
 )
-
-
-class StubDateTimeProvider(IDateTimeProvider):
-    now: datetime
-
-    def get_now(self) -> str:
-        return self.now.isoformat()
+from src.stub_date_provider import StubDateTimeProvider
 
 
 class TestPostingMessage(TestCase):
