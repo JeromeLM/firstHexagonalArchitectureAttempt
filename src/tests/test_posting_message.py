@@ -1,21 +1,16 @@
 from datetime import datetime
 from unittest import TestCase
 
-from src.in_memory_message_repository import InMemoryMessageRepository
 from src.message import Message
 from src.post_message_use_case import (
-    PostMessageUseCase,
     PostMessageCommand,
     MessageTextTooLongError,
     MessageTextEmptyError,
 )
-from src.stub_date_provider import StubDateTimeProvider
+from src.tests.mixins.message_test_case_mixin import MessageTestCaseMixin
 
 
-class TestPostingMessage(TestCase):
-    thrown_error = None
-    message_repository = InMemoryMessageRepository()
-    date_time_provider = StubDateTimeProvider()
+class TestPostingMessage(MessageTestCaseMixin, TestCase):
 
     """
     Rule: a message must have a max length of 280 characters
@@ -84,31 +79,3 @@ class TestPostingMessage(TestCase):
             )
         )
         self.then_posting_should_be_refused_with_error(MessageTextEmptyError)
-
-    """
-    Helpers
-    """
-
-    @classmethod
-    def given_now_is(cls, date_time: datetime):
-        cls.date_time_provider.now = date_time
-
-    @classmethod
-    def when_user_posts_a_message(cls, message_command: PostMessageCommand):
-        try:
-            postMessageUseCase = PostMessageUseCase(
-                cls.message_repository, cls.date_time_provider
-            )
-            postMessageUseCase.handle(message_command)
-        except Exception as e:
-            cls.thrown_error = e
-
-    @classmethod
-    def then_posted_message_should_be(cls, expected_message: Message):
-        assert cls.message_repository.get_by_id(expected_message.id) == expected_message
-
-    @classmethod
-    def then_posting_should_be_refused_with_error(
-        cls, expected_error: [MessageTextTooLongError, MessageTextEmptyError]
-    ):
-        assert isinstance(cls.thrown_error, expected_error)

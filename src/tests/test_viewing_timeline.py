@@ -1,17 +1,11 @@
 from datetime import datetime
-from typing import List
 from unittest import TestCase
 
-from src.in_memory_message_repository import InMemoryMessageRepository
 from src.message import Message
-from src.stub_date_provider import StubDateTimeProvider
-from src.view_timeline_use_case import ViewTimelineUseCase
+from src.tests.mixins.message_test_case_mixin import MessageTestCaseMixin
 
 
-class TestViewingTimeline(TestCase):
-    displayed_timeline = None
-    message_repository = InMemoryMessageRepository()
-    date_time_provider = StubDateTimeProvider()
+class TestViewingTimeline(MessageTestCaseMixin, TestCase):
 
     """
     Rule: messages are displayed in reverse chronological order
@@ -69,22 +63,3 @@ class TestViewingTimeline(TestCase):
                 },
             ]
         )
-
-    """
-    Helpers
-    """
-
-    def given_following_messages_exist(self, messages: List[Message]):
-        self.message_repository.given_existing_messages(messages)
-
-    def given_now_is(self, now: datetime):
-        self.date_time_provider.now = now
-
-    def when_user_wants_to_view_his_timeline(self, author: str):
-        view_timeline_use_case = ViewTimelineUseCase(
-            self.message_repository, self.date_time_provider
-        )
-        self.displayed_timeline = view_timeline_use_case.handle(author)
-
-    def then_displayed_timeline_should_be(self, expected_timeline: List[dict]):
-        assert self.displayed_timeline == expected_timeline

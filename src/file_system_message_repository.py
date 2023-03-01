@@ -8,13 +8,21 @@ from src.message_repository import IMessageRepository
 class FileSystemMessageRepository(IMessageRepository):
     filename = "temporary.json"
 
-    def save(self, msg: Message):
+    def save(self, message: Message):
         messages = self._list_messages()
-        messages.append(msg.to_dict())
+        try:
+            existing_message_index = next(
+                index for index, msg in enumerate(messages) if msg["id"] == message.id
+            )
+            messages[existing_message_index]["text"] = message.text
+        except StopIteration:
+            messages.append(message.to_dict())
+
         with open(self.filename, "w") as f:
             json.dump(messages, f)
 
     def get_by_id(self, message_id: str) -> Message:
+        # TODO jlm: manage case id is not found (StopIteration)
         with open(self.filename, "r") as f:
             messages = self._list_messages()
             message = next(

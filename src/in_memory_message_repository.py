@@ -1,3 +1,4 @@
+import copy
 from typing import List
 
 from src.message import Message
@@ -11,7 +12,7 @@ class InMemoryMessageRepository(IMessageRepository):
         self.messages[msg.id] = msg
 
     def get_by_id(self, message_id: str) -> Message:
-        return self.messages.get(message_id)
+        return copy.deepcopy(self.messages.get(message_id))
 
     def list_messages_by_author(self, author: str) -> List[Message]:
         return [
