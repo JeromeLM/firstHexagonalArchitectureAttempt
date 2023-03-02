@@ -1,7 +1,7 @@
 from datetime import datetime
 from unittest import TestCase
 
-from src.message import Message
+from src.tests.builders.message_builder import MessageBuilder
 from src.tests.mixins.message_test_case_mixin import MessageTestCaseMixin
 
 
@@ -14,30 +14,31 @@ class TestViewingTimeline(MessageTestCaseMixin, TestCase):
     def test_user_Bob_can_view_the_2_messages_he_published_in_his_timeline(self):
         self.given_following_messages_exist(
             [
-                Message(
-                    author="Bob",
-                    id="message-id-1",
-                    text="Bob's first message",
-                    published_at="2022-06-04T19:00:00",
-                ),
-                Message(
-                    author="Jane",
-                    id="message-id-2",
-                    text="Jane's first message",
-                    published_at="2022-06-04T19:01:00",
-                ),
-                Message(
-                    author="Bob",
-                    id="message-id-3",
-                    text="Bob's second message",
-                    published_at="2022-06-04T19:02:00",
-                ),
-                Message(
-                    author="Bob",
-                    id="message-id-4",
-                    text="Bob's last message",
-                    published_at="2022-06-04T19:02:20",
-                ),
+                # TODO jlm: how to arrange this formatting ? it's awful !!
+                MessageBuilder()
+                .written_by("Bob")
+                .with_id("message-id-1")
+                .with_text("Bob's first message")
+                .on("2022-06-04T19:00:00")
+                .build(),
+                MessageBuilder()
+                .written_by("Jane")
+                .with_id("message-id-2")
+                .with_text("Jane's first message")
+                .on("2022-06-04T19:01:00")
+                .build(),
+                MessageBuilder()
+                .written_by("Bob")
+                .with_id("message-id-3")
+                .with_text("Bob's second message")
+                .on("2022-06-04T19:02:00")
+                .build(),
+                MessageBuilder()
+                .written_by("Bob")
+                .with_id("message-id-4")
+                .with_text("Bob's last message")
+                .on("2022-06-04T19:02:20")
+                .build(),
             ]
         )
         self.given_now_is(

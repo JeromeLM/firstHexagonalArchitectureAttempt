@@ -1,11 +1,13 @@
 from dataclasses import dataclass, asdict
 
+from src.message_text import MessageText
+
 
 @dataclass
 class Message:
     id: str
-    text: str
     author: str
+    text: MessageText
     published_at: str = None
 
     def __str__(self) -> str:

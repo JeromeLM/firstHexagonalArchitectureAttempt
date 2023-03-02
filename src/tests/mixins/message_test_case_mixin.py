@@ -6,11 +6,13 @@ from src.message import Message
 from src.post_message_use_case import (
     PostMessageCommand,
     PostMessageUseCase,
-    MessageTextTooLongError,
-    MessageTextEmptyError,
 )
 from src.stub_date_provider import StubDateTimeProvider
 from src.tests.edit_message_use_case import EditMessageUseCase, EditMessageCommand
+from src.message_text_exceptions import (
+    MessageTextTooLongError,
+    MessageTextEmptyError,
+)
 from src.view_timeline_use_case import ViewTimelineUseCase
 
 

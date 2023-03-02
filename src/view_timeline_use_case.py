@@ -22,7 +22,7 @@ class ViewTimelineUseCase:
         return [
             {
                 "author": message.author,
-                "text": message.text,
+                "text": message.text.content,
                 "publishing_time": self._get_publication_time(message.published_at),
             }
             for message in author_messages

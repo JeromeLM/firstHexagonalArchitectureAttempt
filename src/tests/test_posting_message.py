@@ -1,9 +1,9 @@
 from datetime import datetime
 from unittest import TestCase
 
-from src.message import Message
-from src.post_message_use_case import (
-    PostMessageCommand,
+from src.post_message_use_case import PostMessageCommand
+from src.tests.builders.message_builder import MessageBuilder
+from src.message_text_exceptions import (
     MessageTextTooLongError,
     MessageTextEmptyError,
 )
@@ -24,12 +24,12 @@ class TestPostingMessage(MessageTestCaseMixin, TestCase):
             PostMessageCommand(id="message-id", text="Hello everyone", author="Bob")
         )
         self.then_posted_message_should_be(
-            Message(
-                id="message-id",
-                text="Hello everyone",
-                author="Bob",
-                published_at="2022-06-04T19:00:00",
-            )
+            MessageBuilder()
+            .written_by("Bob")
+            .with_id("message-id")
+            .with_text("Hello everyone")
+            .on("2022-06-04T19:00:00")
+            .build(),
         )
 
     def test_user_cannot_post_a_message_on_his_timeline_with_more_than_280_characters(
