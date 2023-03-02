@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from src.post_message_use_case import IDateTimeProvider
+from src.application.use_cases.post_message_use_case import IDateTimeProvider
 
 
 class StubDateTimeProvider(IDateTimeProvider):

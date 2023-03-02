@@ -1,8 +1,8 @@
 import copy
 from typing import List
 
-from src.message import Message
-from src.message_repository import IMessageRepository
+from src.domain.message import Message
+from src.application.ports.message_repository import IMessageRepository
 
 
 class InMemoryMessageRepository(IMessageRepository):

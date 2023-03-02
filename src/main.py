@@ -2,14 +2,19 @@ import argparse
 import random
 from datetime import datetime
 
-from src.file_system_message_repository import FileSystemMessageRepository
-from src.post_message_use_case import (
+from src.infrastructure.adapters.file_system_message_repository import (
+    FileSystemMessageRepository,
+)
+from src.application.use_cases.post_message_use_case import (
     PostMessageCommand,
     PostMessageUseCase,
     IDateTimeProvider,
 )
-from src.tests.edit_message_use_case import EditMessageCommand, EditMessageUseCase
-from src.view_timeline_use_case import ViewTimelineUseCase
+from src.application.use_cases.edit_message_use_case import (
+    EditMessageCommand,
+    EditMessageUseCase,
+)
+from src.application.use_cases.view_timeline_use_case import ViewTimelineUseCase
 
 
 class RealDateTimeProvider(IDateTimeProvider):

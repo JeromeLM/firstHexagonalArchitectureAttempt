@@ -1,7 +1,7 @@
 import abc
 from typing import List
 
-from src.message import Message
+from src.domain.message import Message
 
 
 class IMessageRepository(abc.ABC):

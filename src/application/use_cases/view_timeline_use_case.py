@@ -1,8 +1,8 @@
 from datetime import datetime
 from typing import List
 
-from src.datetime_provider import IDateTimeProvider
-from src.message_repository import IMessageRepository
+from src.application.ports.datetime_provider import IDateTimeProvider
+from src.application.ports.message_repository import IMessageRepository
 
 
 class ViewTimelineUseCase:

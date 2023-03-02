@@ -2,8 +2,8 @@ from datetime import datetime
 from unittest import TestCase
 
 from src.tests.builders.message_builder import MessageBuilder
-from src.tests.edit_message_use_case import EditMessageCommand
-from src.message_text_exceptions import (
+from src.application.use_cases.edit_message_use_case import EditMessageCommand
+from src.domain.message_text_exceptions import (
     MessageTextTooLongError,
     MessageTextEmptyError,
 )

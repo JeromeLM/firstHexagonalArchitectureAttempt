@@ -1,19 +1,24 @@
 from datetime import datetime
 from typing import List
 
-from src.in_memory_message_repository import InMemoryMessageRepository
-from src.message import Message
-from src.post_message_use_case import (
+from src.infrastructure.adapters.in_memory_message_repository import (
+    InMemoryMessageRepository,
+)
+from src.domain.message import Message
+from src.application.use_cases.post_message_use_case import (
     PostMessageCommand,
     PostMessageUseCase,
 )
-from src.stub_date_provider import StubDateTimeProvider
-from src.tests.edit_message_use_case import EditMessageUseCase, EditMessageCommand
-from src.message_text_exceptions import (
+from src.application.use_cases.edit_message_use_case import (
+    EditMessageUseCase,
+    EditMessageCommand,
+)
+from src.domain.message_text_exceptions import (
     MessageTextTooLongError,
     MessageTextEmptyError,
 )
-from src.view_timeline_use_case import ViewTimelineUseCase
+from src.application.use_cases.view_timeline_use_case import ViewTimelineUseCase
+from src.infrastructure.adapters.stub_date_time_provider import StubDateTimeProvider
 
 
 class MessageTestCaseMixin:

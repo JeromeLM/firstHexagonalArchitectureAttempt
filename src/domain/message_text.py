@@ -1,6 +1,6 @@
 import dataclasses
 
-from src.message_text_exceptions import (
+from src.domain.message_text_exceptions import (
     MessageTextEmptyError,
     MessageTextTooLongError,
 )

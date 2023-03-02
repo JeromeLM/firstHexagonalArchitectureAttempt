@@ -3,8 +3,8 @@
 from dataclasses import dataclass, asdict
 from datetime import datetime
 
-from src.message import Message
-from src.message_text import MessageText
+from src.domain.message import Message
+from src.domain.message_text import MessageText
 
 
 @dataclass

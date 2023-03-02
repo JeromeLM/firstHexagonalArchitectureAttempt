@@ -1,9 +1,9 @@
 from dataclasses import dataclass
 
-from src.datetime_provider import IDateTimeProvider
-from src.message import Message
-from src.message_repository import IMessageRepository
-from src.message_text import MessageText
+from src.application.ports.datetime_provider import IDateTimeProvider
+from src.domain.message import Message
+from src.application.ports.message_repository import IMessageRepository
+from src.domain.message_text import MessageText
 
 
 @dataclass

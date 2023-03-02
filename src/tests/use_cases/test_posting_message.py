@@ -1,9 +1,9 @@
 from datetime import datetime
 from unittest import TestCase
 
-from src.post_message_use_case import PostMessageCommand
+from src.application.use_cases.post_message_use_case import PostMessageCommand
 from src.tests.builders.message_builder import MessageBuilder
-from src.message_text_exceptions import (
+from src.domain.message_text_exceptions import (
     MessageTextTooLongError,
     MessageTextEmptyError,
 )

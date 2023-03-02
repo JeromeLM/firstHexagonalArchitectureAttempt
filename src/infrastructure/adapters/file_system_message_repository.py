@@ -1,12 +1,12 @@
 import json
 from typing import List
 
-from src.message import Message
-from src.message_repository import IMessageRepository
+from src.domain.message import Message
+from src.application.ports.message_repository import IMessageRepository
 
 
 class FileSystemMessageRepository(IMessageRepository):
-    filename = "temporary.json"
+    filename = "../../temporary.json"
 
     def save(self, message: Message):
         messages = self._list_messages()

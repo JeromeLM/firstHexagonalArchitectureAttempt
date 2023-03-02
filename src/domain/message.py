@@ -1,6 +1,6 @@
 from dataclasses import dataclass, asdict
 
-from src.message_text import MessageText
+from src.domain.message_text import MessageText
 
 
 @dataclass
