@@ -15,16 +15,20 @@ class MessageBuilder:
     published_at: str = datetime(year=2022, month=6, day=4, hour=19, minute=3, second=0)
 
     def with_id(self, id: str):
-        return MessageBuilder(**{**asdict(self), "id": id})
+        self.id = id
+        return self
 
     def written_by(self, author: str):
-        return MessageBuilder(**{**asdict(self), "author": author})
+        self.author = author
+        return self
 
     def with_text(self, text: str):
-        return MessageBuilder(**{**asdict(self), "text": text})
+        self.text = text
+        return self
 
     def on(self, published_at: str):
-        return MessageBuilder(**{**asdict(self), "published_at": published_at})
+        self.published_at = published_at
+        return self
 
     def build(self):
         return Message(
