@@ -12,7 +12,9 @@ class MessageBuilder:
     id: str = "message id"
     author: str = "John Doe"
     text: str = "this is a text"
-    published_at: str = datetime(year=2022, month=6, day=4, hour=19, minute=3, second=0)
+    published_at: str = datetime(
+        year=2022, month=6, day=4, hour=19, minute=3, second=0
+    ).isoformat()
 
     def with_id(self, id: str):
         self.id = id
@@ -36,5 +38,5 @@ class MessageBuilder:
             author=self.author,
             # TODO jlm: Law of Demeter not respected !
             text=MessageText(self.text),
-            published_at=self.published_at,
+            published_at=datetime.fromisoformat(self.published_at),
         )

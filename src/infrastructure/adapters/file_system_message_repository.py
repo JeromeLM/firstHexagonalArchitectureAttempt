@@ -1,5 +1,6 @@
 import json
 import os.path
+from datetime import datetime
 from typing import List
 
 from src.domain.message import Message
@@ -22,7 +23,10 @@ class FileSystemMessageRepository(IMessageRepository):
             )
             # TODO jlm: Law of Demeter not respected !
             messages[existing_message_index]["text"] = message.text.content
-            messages[existing_message_index]["published_at"] = message.published_at
+            # TODO jlm: We should not have to do that here (datetime conversion) !
+            messages[existing_message_index][
+                "published_at"
+            ] = message.published_at.isoformat()
         except StopIteration:
             # TODO jlm: Law of Demeter not respected !
             messages.append({**message.to_dict(), "text": message.text.content})
@@ -38,7 +42,7 @@ class FileSystemMessageRepository(IMessageRepository):
             id=message["id"],
             text=MessageText(message["text"]),
             author=message["author"],
-            published_at=message["published_at"],
+            published_at=datetime.fromisoformat(message["published_at"]),
         )
 
     def list_messages_by_author(self, author: str) -> List[Message]:
@@ -49,7 +53,8 @@ class FileSystemMessageRepository(IMessageRepository):
                 # TODO jlm: Law of Demeter not respected !
                 text=MessageText(message["text"]),
                 author=message["author"],
-                published_at=message["published_at"],
+                # TODO jlm: We should not have to do that here (datetime conversion) !
+                published_at=datetime.fromisoformat(message["published_at"]),
             )
             for message in messages
             if message["author"] == author

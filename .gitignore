@@ -163,5 +163,5 @@ dmypy.json
 .idea/**/libraries
 
 # Custom
-src/temporary.json
+src/messages.json
 src/tests/adapters/fs_message_repository_test.json

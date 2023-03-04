@@ -1,4 +1,5 @@
 from dataclasses import dataclass, asdict
+from datetime import datetime
 
 from src.domain.message_text import MessageText
 
@@ -8,14 +9,13 @@ class Message:
     id: str
     author: str
     text: MessageText
-    # TODO jlm: should be a datetime
-    published_at: str = None
+    published_at: datetime = None
 
     def __str__(self) -> str:
         return (
             f"Message from {self.author} with id {self.id} and "
-            f"containing '{self.text}' was published at {self.published_at}"
+            f"containing '{self.text.content}' was published at {self.published_at}"
         )
 
     def to_dict(self) -> dict:
-        return asdict(self)
+        return {**asdict(self), "published_at": self.published_at.isoformat()}

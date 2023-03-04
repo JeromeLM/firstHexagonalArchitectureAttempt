@@ -1,6 +1,5 @@
 import argparse
 import random
-from datetime import datetime
 
 from src.infrastructure.adapters.file_system_message_repository import (
     FileSystemMessageRepository,

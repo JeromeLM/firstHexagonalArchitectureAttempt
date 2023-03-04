@@ -29,12 +29,9 @@ class ViewTimelineUseCase:
             for message in author_messages
         ]
 
-    def _get_publication_time(self, published_at: str) -> str:
-        datetime_published_at = datetime.fromisoformat(published_at)
-        datetime_now = datetime.fromisoformat(self.date_time_provider.get_now())
-        diff_time_in_minutes = (
-            datetime_now - datetime_published_at
-        ).total_seconds() / 60
+    def _get_publication_time(self, published_at: datetime) -> str:
+        now = self.date_time_provider.get_now()
+        diff_time_in_minutes = (now - published_at).total_seconds() / 60
         if diff_time_in_minutes < 1:
             return "less than 1 minute ago"
         if diff_time_in_minutes >= 1 and diff_time_in_minutes < 2:
