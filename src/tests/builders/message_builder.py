@@ -34,6 +34,7 @@ class MessageBuilder:
         return Message(
             id=self.id,
             author=self.author,
+            # TODO jlm: Law of Demeter not respected !
             text=MessageText(self.text),
             published_at=self.published_at,
         )
