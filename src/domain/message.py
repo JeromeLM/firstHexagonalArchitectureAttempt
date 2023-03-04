@@ -8,6 +8,7 @@ class Message:
     id: str
     author: str
     text: MessageText
+    # TODO jlm: should be a datetime
     published_at: str = None
 
     def __str__(self) -> str:

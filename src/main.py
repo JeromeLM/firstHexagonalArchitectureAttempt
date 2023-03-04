@@ -8,19 +8,13 @@ from src.infrastructure.adapters.file_system_message_repository import (
 from src.application.use_cases.post_message_use_case import (
     PostMessageCommand,
     PostMessageUseCase,
-    IDateTimeProvider,
 )
 from src.application.use_cases.edit_message_use_case import (
     EditMessageCommand,
     EditMessageUseCase,
 )
 from src.application.use_cases.view_timeline_use_case import ViewTimelineUseCase
-
-
-class RealDateTimeProvider(IDateTimeProvider):
-    def get_now(self):
-        return datetime.now().isoformat()
-
+from src.infrastructure.adapters.real_date_time_provider import RealDateTimeProvider
 
 arg_parser = argparse.ArgumentParser()
 arg_parser.add_argument(

@@ -161,3 +161,7 @@ dmypy.json
 # Gradle
 .idea/**/gradle.xml
 .idea/**/libraries
+
+# Custom
+src/temporary.json
+src/tests/adapters/fs_message_repository_test.json
