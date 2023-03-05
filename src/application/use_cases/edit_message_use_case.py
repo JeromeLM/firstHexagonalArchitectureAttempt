@@ -24,13 +24,14 @@ class EditMessageUseCase:
 
     def handle(self, message_command: EditMessageCommand):
         # TODO jlm: check author
-        message_text = MessageText(content=message_command.text)
         message = self.message_repository.get_by_id(message_command.id)
         self.message_repository.save(
-            Message(
-                id=message.id,
-                author=message.author,
-                text=message_text,
-                published_at=self.date_time_provider.get_now(),
+            Message.create_from_data(
+                {
+                    "id": message.id,
+                    "author": message.author,
+                    "text": message_command.text,
+                    "published_at": self.date_time_provider.get_now(),
+                }
             )
         )

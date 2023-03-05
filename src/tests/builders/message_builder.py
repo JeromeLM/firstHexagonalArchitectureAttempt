@@ -33,10 +33,11 @@ class MessageBuilder:
         return self
 
     def build(self):
-        return Message(
-            id=self.id,
-            author=self.author,
-            # TODO jlm: Law of Demeter not respected !
-            text=MessageText(self.text),
-            published_at=datetime.fromisoformat(self.published_at),
+        return Message.create_from_data(
+            {
+                "id": self.id,
+                "author": self.author,
+                "text": self.text,
+                "published_at": self.published_at,
+            }
         )

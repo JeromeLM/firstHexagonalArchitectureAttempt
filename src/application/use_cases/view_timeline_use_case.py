@@ -22,8 +22,7 @@ class ViewTimelineUseCase:
         return [
             {
                 "author": message.author,
-                # TODO jlm: Law of Demeter not respected !
-                "text": message.text.content,
+                "text": message.text,
                 "publishing_time": self._get_publication_time(message.published_at),
             }
             for message in author_messages

@@ -21,15 +21,12 @@ class FileSystemMessageRepository(IMessageRepository):
             existing_message_index = next(
                 index for index, msg in enumerate(messages) if msg["id"] == message.id
             )
-            # TODO jlm: Law of Demeter not respected !
-            messages[existing_message_index]["text"] = message.text.content
-            # TODO jlm: We should not have to do that here (datetime conversion) !
+            messages[existing_message_index]["text"] = message.text
             messages[existing_message_index][
                 "published_at"
             ] = message.published_at.isoformat()
         except StopIteration:
-            # TODO jlm: Law of Demeter not respected !
-            messages.append({**message.to_dict(), "text": message.text.content})
+            messages.append({**message.to_dict()})
 
         with open(self.filepath, "w") as f:
             json.dump(messages, f)
@@ -38,24 +35,12 @@ class FileSystemMessageRepository(IMessageRepository):
         # TODO jlm: manage case id is not found (StopIteration)
         messages = self._list_messages()
         message = next(message for message in messages if message["id"] == message_id)
-        return Message(
-            id=message["id"],
-            text=MessageText(message["text"]),
-            author=message["author"],
-            published_at=datetime.fromisoformat(message["published_at"]),
-        )
+        return Message.create_from_data(message)
 
     def list_messages_by_author(self, author: str) -> List[Message]:
         messages = self._list_messages()
         return [
-            Message(
-                id=message["id"],
-                # TODO jlm: Law of Demeter not respected !
-                text=MessageText(message["text"]),
-                author=message["author"],
-                # TODO jlm: We should not have to do that here (datetime conversion) !
-                published_at=datetime.fromisoformat(message["published_at"]),
-            )
+            Message.create_from_data(message)
             for message in messages
             if message["author"] == author
         ]

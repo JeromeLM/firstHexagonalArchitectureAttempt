@@ -23,11 +23,12 @@ class PostMessageUseCase:
         self.date_time_provider = date_time_provider
 
     def handle(self, message_command: PostMessageCommand):
-        message_text = MessageText(content=message_command.text)
-        message = Message(
-            id=message_command.id,
-            text=message_text,
-            author=message_command.author,
-            published_at=self.date_time_provider.get_now(),
+        message = Message.create_from_data(
+            {
+                "id": message_command.id,
+                "text": message_command.text,
+                "author": message_command.author,
+                "published_at": self.date_time_provider.get_now(),
+            }
         )
         self.message_repository.save(message)
