@@ -3,7 +3,6 @@ from dataclasses import dataclass
 from src.application.ports.datetime_provider import IDateTimeProvider
 from src.domain.message import Message
 from src.application.ports.message_repository import IMessageRepository
-from src.domain.message_text import MessageText
 
 
 @dataclass

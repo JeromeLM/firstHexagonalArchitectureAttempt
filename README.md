@@ -26,3 +26,5 @@ Use Case 2 : A user can view all his messages on his personal timeline
 Use Case 3 : A user can edit one of his messages from his personal timeline
 - Business rules :
   - same as the ones of Use Case 1
+
+Use Case 4 : A user can subscribe to another user's timeline
