@@ -6,7 +6,8 @@ from src.domain.followee import Followee
 
 
 class InMemoryFolloweeRepository(IFolloweeRepository):
-    followees_by_user = {}
+    def __init__(self):
+        self.followees_by_user = {}
 
     def save(self, followee: Followee):
         self._add_followee(followee)

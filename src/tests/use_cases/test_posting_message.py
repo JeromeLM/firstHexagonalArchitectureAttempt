@@ -7,23 +7,25 @@ from src.domain.message_text_exceptions import (
     MessageTextTooLongError,
     MessageTextEmptyError,
 )
-from src.tests.mixins.message_test_case_mixin import MessageTestCaseMixin
+from src.tests.fixtures.message_fixture import MessageFixture
 
 
-class TestPostingMessage(MessageTestCaseMixin, TestCase):
+class TestPostingMessage(TestCase):
+    def setUp(self) -> None:
+        self.message_fixture = MessageFixture()
 
     """
     Rule: a message must have a max length of 280 characters
     """
 
     def test_user_can_post_a_message_on_his_timeline(self):
-        self.given_now_is(
+        self.message_fixture.given_now_is(
             datetime(year=2022, month=6, day=4, hour=19, minute=0, second=0)
         )
-        self.when_user_posts_a_message(
+        self.message_fixture.when_user_posts_a_message(
             PostMessageCommand(id="message-id", text="Hello everyone", author="Bob")
         )
-        self.then_posted_message_should_be(
+        self.message_fixture.then_posted_message_should_be(
             MessageBuilder()
             .written_by("Bob")
             .with_id("message-id")
@@ -42,15 +44,17 @@ class TestPostingMessage(MessageTestCaseMixin, TestCase):
             "et malesuada fames ac turpis egestas. Vivamus suscipit feugiat "
             "sollicitudin. Aliquam erat volutpat amet."
         )
-        self.given_now_is(
+        self.message_fixture.given_now_is(
             datetime(year=2022, month=6, day=4, hour=19, minute=0, second=0)
         )
-        self.when_user_posts_a_message(
+        self.message_fixture.when_user_posts_a_message(
             PostMessageCommand(
                 id="message-id", text=text_with_more_than_280_characters, author="Bob"
             )
         )
-        self.then_posting_should_be_refused_with_error(MessageTextTooLongError)
+        self.message_fixture.then_posting_should_be_refused_with_error(
+            MessageTextTooLongError
+        )
 
     """
     Rule: a message cannot be empty
@@ -58,24 +62,28 @@ class TestPostingMessage(MessageTestCaseMixin, TestCase):
 
     def test_user_cannot_post_an_empty_message_on_his_timeline(self):
         text_empty = ""
-        self.given_now_is(
+        self.message_fixture.given_now_is(
             datetime(year=2022, month=6, day=4, hour=19, minute=0, second=0)
         )
-        self.when_user_posts_a_message(
+        self.message_fixture.when_user_posts_a_message(
             PostMessageCommand(id="message-id", text=text_empty, author="Bob")
         )
-        self.then_posting_should_be_refused_with_error(MessageTextEmptyError)
+        self.message_fixture.then_posting_should_be_refused_with_error(
+            MessageTextEmptyError
+        )
 
     def test_user_cannot_post_a_message_on_his_timeline_with_only_space_characters(
         self,
     ):
         text_with_only_space_characters = "      "
-        self.given_now_is(
+        self.message_fixture.given_now_is(
             datetime(year=2022, month=6, day=4, hour=19, minute=0, second=0)
         )
-        self.when_user_posts_a_message(
+        self.message_fixture.when_user_posts_a_message(
             PostMessageCommand(
                 id="message-id", text=text_with_only_space_characters, author="Bob"
             )
         )
-        self.then_posting_should_be_refused_with_error(MessageTextEmptyError)
+        self.message_fixture.then_posting_should_be_refused_with_error(
+            MessageTextEmptyError
+        )

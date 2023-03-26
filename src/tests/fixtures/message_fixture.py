@@ -21,11 +21,12 @@ from src.application.use_cases.view_timeline_use_case import ViewTimelineUseCase
 from src.infrastructure.adapters.stub_date_time_provider import StubDateTimeProvider
 
 
-class MessageTestCaseMixin:
-    thrown_error = None
-    message_repository = InMemoryMessageRepository()
-    date_time_provider = StubDateTimeProvider()
-    displayed_timeline = None
+class MessageFixture:
+    def __init__(self):
+        self.thrown_error = None
+        self.message_repository = InMemoryMessageRepository()
+        self.date_time_provider = StubDateTimeProvider()
+        self.displayed_timeline = None
 
     # GIVEN
     # =====

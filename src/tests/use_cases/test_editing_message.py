@@ -7,10 +7,10 @@ from src.domain.message_text_exceptions import (
     MessageTextTooLongError,
     MessageTextEmptyError,
 )
-from src.tests.mixins.message_test_case_mixin import MessageTestCaseMixin
+from src.tests.fixtures.message_fixture import MessageFixture
 
 
-class TestEditingMessage(MessageTestCaseMixin, TestCase):
+class TestEditingMessage(TestCase):
     original_message = (
         MessageBuilder()
         .written_by("Bob")
@@ -20,23 +20,26 @@ class TestEditingMessage(MessageTestCaseMixin, TestCase):
         .build()
     )
 
+    def setUp(self) -> None:
+        self.message_fixture = MessageFixture()
+
     """
     Rule: a message must have a max length of 280 characters
     """
 
     def test_user_can_edit_a_message_on_his_timeline(self):
-        self.given_following_messages_exist([self.original_message])
-        self.given_now_is(
+        self.message_fixture.given_following_messages_exist([self.original_message])
+        self.message_fixture.given_now_is(
             datetime(year=2022, month=6, day=4, hour=19, minute=10, second=0)
         )
-        self.when_user_edits_message(
+        self.message_fixture.when_user_edits_message(
             EditMessageCommand(
                 author="Bob",
                 id="message-id-4",
                 text="Bob's edited message",
             )
         )
-        self.then_edited_message_should_be(
+        self.message_fixture.then_edited_message_should_be(
             MessageBuilder()
             .written_by("Bob")
             .with_id("message-id-4")
@@ -55,21 +58,21 @@ class TestEditingMessage(MessageTestCaseMixin, TestCase):
             "et malesuada fames ac turpis egestas. Vivamus suscipit feugiat "
             "sollicitudin. Aliquam erat volutpat amet."
         )
-        self.given_following_messages_exist([self.original_message])
-        self.given_now_is(
+        self.message_fixture.given_following_messages_exist([self.original_message])
+        self.message_fixture.given_now_is(
             datetime(year=2022, month=6, day=4, hour=19, minute=10, second=0)
         )
-        self.when_user_edits_message(
+        self.message_fixture.when_user_edits_message(
             EditMessageCommand(
                 author="Bob",
                 id="message-id-4",
                 text=text_with_more_than_280_characters,
             )
         )
-        self.then_editing_should_be_refused_with_error(
+        self.message_fixture.then_editing_should_be_refused_with_error(
             expected_error=MessageTextTooLongError
         )
-        self.then_message_should_be(self.original_message)
+        self.message_fixture.then_message_should_be(self.original_message)
 
     """
     Rule: a message cannot be empty
@@ -77,38 +80,38 @@ class TestEditingMessage(MessageTestCaseMixin, TestCase):
 
     def test_user_cannot_edit_a_message_on_his_timeline_to_an_empty_message(self):
         text_empty = ""
-        self.given_following_messages_exist([self.original_message])
-        self.given_now_is(
+        self.message_fixture.given_following_messages_exist([self.original_message])
+        self.message_fixture.given_now_is(
             datetime(year=2022, month=6, day=4, hour=19, minute=10, second=0)
         )
-        self.when_user_edits_message(
+        self.message_fixture.when_user_edits_message(
             EditMessageCommand(
                 author="Bob",
                 id="message-id-4",
                 text=text_empty,
             )
         )
-        self.then_editing_should_be_refused_with_error(
+        self.message_fixture.then_editing_should_be_refused_with_error(
             expected_error=MessageTextEmptyError
         )
-        self.then_message_should_be(self.original_message)
+        self.message_fixture.then_message_should_be(self.original_message)
 
     def test_user_cannot_edit_a_message_on_his_timeline_to_only_space_characters(
         self,
     ):
         text_with_only_space_characters = "      "
-        self.given_following_messages_exist([self.original_message])
-        self.given_now_is(
+        self.message_fixture.given_following_messages_exist([self.original_message])
+        self.message_fixture.given_now_is(
             datetime(year=2022, month=6, day=4, hour=19, minute=10, second=0)
         )
-        self.when_user_edits_message(
+        self.message_fixture.when_user_edits_message(
             EditMessageCommand(
                 author="Bob",
                 id="message-id-4",
                 text=text_with_only_space_characters,
             )
         )
-        self.then_editing_should_be_refused_with_error(
+        self.message_fixture.then_editing_should_be_refused_with_error(
             expected_error=MessageTextEmptyError
         )
-        self.then_message_should_be(self.original_message)
+        self.message_fixture.then_message_should_be(self.original_message)

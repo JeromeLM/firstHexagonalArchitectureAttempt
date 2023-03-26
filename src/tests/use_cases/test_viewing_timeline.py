@@ -2,17 +2,19 @@ from datetime import datetime
 from unittest import TestCase
 
 from src.tests.builders.message_builder import MessageBuilder
-from src.tests.mixins.message_test_case_mixin import MessageTestCaseMixin
+from src.tests.fixtures.message_fixture import MessageFixture
 
 
-class TestViewingTimeline(MessageTestCaseMixin, TestCase):
+class TestViewingTimeline(TestCase):
+    def setUp(self) -> None:
+        self.message_fixture = MessageFixture()
 
     """
     Rule: messages are displayed in reverse chronological order
     """
 
     def test_user_Bob_can_view_the_2_messages_he_published_in_his_timeline(self):
-        self.given_following_messages_exist(
+        self.message_fixture.given_following_messages_exist(
             [
                 # TODO jlm: how to arrange this formatting ? it's awful !!
                 MessageBuilder()
@@ -41,11 +43,11 @@ class TestViewingTimeline(MessageTestCaseMixin, TestCase):
                 .build(),
             ]
         )
-        self.given_now_is(
+        self.message_fixture.given_now_is(
             datetime(year=2022, month=6, day=4, hour=19, minute=3, second=0)
         )
-        self.when_user_wants_to_view_his_timeline(author="Bob")
-        self.then_displayed_timeline_should_be(
+        self.message_fixture.when_user_wants_to_view_his_timeline(author="Bob")
+        self.message_fixture.then_displayed_timeline_should_be(
             [
                 {
                     "author": "Bob",

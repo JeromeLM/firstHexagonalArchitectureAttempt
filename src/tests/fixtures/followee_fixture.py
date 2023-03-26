@@ -11,21 +11,28 @@ from src.infrastructure.adapters.in_memory_followee_repository import (
 )
 
 
-class FolloweeTestCaseMixin:
-    followee_repository = InMemoryFolloweeRepository()
+class FolloweeFixture:
+    def __init__(self):
+        self.followee_repository = InMemoryFolloweeRepository()
 
+    # GIVEN
+    # =====
     def given_user_followees(self, user: str, followees: List[str]):
         existing_followees = [
             Followee(user=user, followee=followee) for followee in followees
         ]
         self.followee_repository.given_existing_followees(existing_followees)
 
+    # WHEN
+    # ====
     def when_user_follows_another_user(self, follow_user_command: FollowUserCommand):
         follow_user_use_case = FollowUserUseCase(
             followee_repository=self.followee_repository
         )
         follow_user_use_case.handle(follow_user_command)
 
+    # THEN
+    # ====
     def then_user_followees_should_be(self, expected_user_followees: dict):
         actual_followees = self.followee_repository.list_followees_of_user(
             expected_user_followees["user"]

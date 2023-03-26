@@ -1,23 +1,31 @@
 from datetime import datetime
 from unittest import TestCase
 
-from src.application.use_cases.view_wall_use_case import ViewWallUseCase
 from src.tests.builders.message_builder import MessageBuilder
-from src.tests.mixins.followee_test_case_mixin import FolloweeTestCaseMixin
-from src.tests.mixins.message_test_case_mixin import MessageTestCaseMixin
+from src.tests.fixtures.followee_fixture import FolloweeFixture
+from src.tests.fixtures.message_fixture import MessageFixture
+from src.tests.fixtures.wall_fixture import WallFixture
 
 
-class TestViewingUserWallUseCase(FolloweeTestCaseMixin, MessageTestCaseMixin, TestCase):
+class TestViewingUserWallUseCase(TestCase):
+    def setUp(self) -> None:
+        self.message_fixture = MessageFixture()
+        self.followee_fixture = FolloweeFixture()
+        self.wall_fixture = WallFixture(
+            message_repository=self.message_fixture.message_repository,
+            followee_repository=self.followee_fixture.followee_repository,
+        )
+
     """
     Rule: all the messages from the user and his followees must appear in reverse
     chronological order
     """
 
-    wall = []
-
     def test_user_can_view_his_wall(self):
-        self.given_user_followees(user="Bob", followees=["Jane", "David"])
-        self.given_following_messages_exist(
+        self.followee_fixture.given_user_followees(
+            user="Bob", followees=["Jane", "David"]
+        )
+        self.message_fixture.given_following_messages_exist(
             [
                 # TODO jlm: how to arrange this formatting ? it's awful !!
                 MessageBuilder()
@@ -46,11 +54,11 @@ class TestViewingUserWallUseCase(FolloweeTestCaseMixin, MessageTestCaseMixin, Te
                 .build(),
             ]
         )
-        self.given_now_is(
+        self.wall_fixture.given_now_is(
             datetime(year=2022, month=6, day=4, hour=19, minute=19, second=30)
         )
-        self.when_user_wants_to_see_his_wall(user="Bob")
-        self.then_user_should_see_on_his_wall(
+        self.wall_fixture.when_user_wants_to_see_his_wall(user="Bob")
+        self.wall_fixture.then_user_should_see_on_his_wall(
             [
                 {
                     "author": "Jane",
@@ -74,14 +82,3 @@ class TestViewingUserWallUseCase(FolloweeTestCaseMixin, MessageTestCaseMixin, Te
                 },
             ]
         )
-
-    def when_user_wants_to_see_his_wall(self, user: str):
-        view_wall_use_case = ViewWallUseCase(
-            message_repository=self.message_repository,
-            followee_repository=self.followee_repository,
-            date_time_provider=self.date_time_provider,
-        )
-        self.wall = view_wall_use_case.handle(user="Bob")
-
-    def then_user_should_see_on_his_wall(self, expected_wall):
-        assert self.wall == expected_wall
