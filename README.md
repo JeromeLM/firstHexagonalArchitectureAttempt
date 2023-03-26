@@ -28,3 +28,7 @@ Use Case 3 : A user can edit one of his messages from his personal timeline
   - same as the ones of Use Case 1
 
 Use Case 4 : A user can subscribe to another user's timeline
+
+Use Case 5 : A user can view on his wall all his messages and the ones of his followees
+- Business rules :
+  - a) messages are displayed in reverse chronological order
